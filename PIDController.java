@@ -11,6 +11,7 @@ public class PIDController{
     public double ivalue = 0;
     public double dvalue = 0;
     public Timer startcorrect = new Timer();
+    public double aceptederror = 0;
 
     /**
      * this is what you need to set up the PID controller
@@ -32,11 +33,22 @@ public class PIDController{
     public void setTarget(double target){
         this.target = target;
     }
+
+    /**
+     * Use this if you want to set a tolerance on your pidcontroller
+     * @param tolerance the number you want to allow for a maximum tolerance
+     */
     public void setTolerance(double tolerance){
-        this.tolerance = tolerance;
+        aceptederror = tolerance;
     }
 
-    public double calculate(){
+    /**
+     * this is where the PID value is calculated and used at your discretion
+     * @param maximumoutput based on your number being controlled, you may want to set limits (1 is a typical limit as it represents 100% power)
+     * @param minimumoutput this is essentially the same as the maximum, but likely in the opposite direction (-1 is the typical limit as -1 represents 100% power in the opposite direction)
+     * 
+     */
+    public double calculate(double maximumoutput, double minimumoutput){
         double error = target - input;
         double last_error;
         double final_value;
@@ -59,21 +71,46 @@ public class PIDController{
         else{
         final_value = pvalue + ivalue + dvalue;
         }
-        return final_value;
+        if(final_value >= maximumoutput){
+            return maximumoutput;
+        }
+        else if(final_value <= minimumoutput){
+            return minimumoutput;
+        }
+        else {
+            return final_value;
+        }
     }
 
     /**
      * 
-     * @param manualcontrol this is the number of an variable that you could get from manual control. Like, say 
+     * This is a commonly used team function that allows for full manual control when you wish to input it. Otherwise, a timer will go off to check.
+     * After a short period of time, the PID Controller will act to maintain the last known input when you had manual control.
+     * @param manualinput this is the number of an variable that you could get from manual control. Like, say 
      * for a motor, this might be a speed variable you get from a joystick or other source outside of this PID controller.
+     * The input from configure earlier will be used as your set point as things go along. 
+     * 
+     * @param maximumoutput if your output can't exceed a certain number, set this to that number so things won't go over 100%
+     * @param minimuminput same as above, but in the opposite direction
+     * DOUBLE CHECK that the manual input affects the input configured earlier. 
+     * Otherwise, you may be in for a wacky ride.
      */
-    public double maintainposition(double manualcontrol){
+    public double semiAutomate(double manualinput, double maximumoutput, double minimumoutput){
         PIDController autocorrect = new PIDController();
 
+        autocorrect.configure(input, P, I, D);
+        startcorrect.start();
 
-
-
+        if (math.abs(input) > 0){
+            return input;
+            autocorrect.setTarget(input);
+            startcorrect.reset();
+        }
+        else if (startcorrect.get() < 0.33){
+            return 0;
+        }
+        else {
+            return autocorrect.calculate(maximumoutput, minimumoutput);
+        }
     }
-
-
 }
