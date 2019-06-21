@@ -1,12 +1,19 @@
 public class PIDController{
+    
+    
+    /**
+     * @author Nikolai (AdmiralTryhard)
+     */
+    
     public double num1 = 0;
     public double num2 = 0;
     public double pvalue = 0;
     public double ivalue = 0;
     public double dvalue = 0;
+    public Timer startcorrect = new Timer();
 
     /**
-     * 
+     * this is what you need to set up the PID controller
      * @param input The number you are trying to control with the PID loop
      * @param P Proportional
      * @param I Integral
@@ -19,7 +26,7 @@ public class PIDController{
         this.D = D;
     }
     /**
-     * 
+     * this function tells the pid controller where you want your number to be
      * @param target this is where you're trying to get the input to.
      */
     public void setTarget(double target){
@@ -53,8 +60,19 @@ public class PIDController{
         final_value = pvalue + ivalue + dvalue;
         }
         return final_value;
+    }
 
-        
+    /**
+     * 
+     * @param manualcontrol this is the number of an variable that you could get from manual control. Like, say 
+     * for a motor, this might be a speed variable you get from a joystick or other source outside of this PID controller.
+     */
+    public double maintainposition(double manualcontrol){
+        PIDController autocorrect = new PIDController();
+
+
+
+
     }
 
 
