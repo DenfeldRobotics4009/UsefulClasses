@@ -86,14 +86,14 @@ public class PIDController{
      * 
      * This is a commonly used team function that allows for full manual control when you wish to input it. Otherwise, a timer will go off to check.
      * After a short period of time, the PID Controller will act to maintain the last known input when you had manual control.
+     * DOUBLE CHECK that the manual input affects the number that you set as the input for the PID Controller. 
+     * Otherwise, you may be in for a wacky ride.
      * @param manualinput this is the number of an variable that you could get from manual control. Like, say 
      * for a motor, this might be a speed variable you get from a joystick or other source outside of this PID controller.
-     * The input from configure earlier will be used as your set point as things go along. 
-     * 
+     * The input from configure earlier will be used as your set point as things go along.
      * @param maximumoutput if your output can't exceed a certain number, set this to that number so things won't go over 100%
      * @param minimuminput same as above, but in the opposite direction
-     * DOUBLE CHECK that the manual input affects the input configured earlier. 
-     * Otherwise, you may be in for a wacky ride.
+     *
      */
     public double semiAutomate(double manualinput, double maximumoutput, double minimumoutput){
         PIDController autocorrect = new PIDController();
@@ -101,8 +101,8 @@ public class PIDController{
         autocorrect.configure(input, P, I, D);
         startcorrect.start();
 
-        if (math.abs(input) > 0){
-            return input;
+        if (math.abs(manualinput) > 0){
+            return manualinput;
             autocorrect.setTarget(input);
             startcorrect.reset();
         }
@@ -113,4 +113,5 @@ public class PIDController{
             return autocorrect.calculate(maximumoutput, minimumoutput);
         }
     }
+
 }
