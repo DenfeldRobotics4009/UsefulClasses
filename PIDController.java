@@ -14,7 +14,7 @@ public class PIDController{
     public double aceptederror = 0;
 
     /**
-     * this is what you need to set up the PID controller
+     * this is what you need to set up the PID controller. You must use this method before doing anything else.
      * @param input The number you are trying to control with the PID loop
      * @param P Proportional
      * @param I Integral
@@ -114,4 +114,4 @@ public class PIDController{
         }
     }
 
-}
+}   

@@ -34,16 +34,25 @@ public class DeadZoneTuner{
         return result;
         }
     }
-    /**WIP
+    /** 1st and foremost, this assumes a -1 to 1 initial scale for your input (as it is the most common for our applications)
+     * This will let you adjust the input to any scale that you want by setting the minimum and maximum.
+     * @param input this is the number that you will be adjusting to scale
+     * @param minimumscale
+     * @param maximumscale
+     * @param override if this is true, this just remains at 1. Otherwise, the function runs normally.
      * 
      */
-    public void changescale(double input, double minimumscale, double maximumscale, boolean override){
+    public double changescale(double input, double minimumscale, double maximumscale, boolean override){
         double output;
+
+        double initialscale = (input + 1) /2;
+
         if(override){
-            output = 1;
+         output = 1;
         }
         else{
-            output = idk yet;
+        output = (initialscale * (maximumscale - minimumscale) + minimumscale);
         }
+        return output;
     }
 }
