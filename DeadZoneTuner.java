@@ -19,7 +19,7 @@ public class DeadZoneTuner{
  * 
  */
 
-    public double adjustForDeadzone(double tobescaled, double minimumrange, double maximumrange, double deadzone, boolean isInverted){
+    public double adjustForDeadzone(double tobescaled, double deadzone, boolean isInverted){
         double result;
         if(Math.abs(input) <= deadzone){
             result = 0;
