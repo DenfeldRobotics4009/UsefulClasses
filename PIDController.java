@@ -12,6 +12,11 @@ public class PIDController{
     public double dvalue = 0;
     public Timer startcorrect = new Timer();
     public double aceptederror = 0;
+    public double kP;
+    public double kI;
+    public double kD;
+    public double changed;
+
 
     /**
      * this is what you need to set up the PID controller. You must use this method before doing anything else.
@@ -20,11 +25,12 @@ public class PIDController{
      * @param I Integral
      * @param D Derivative
      */
-    public void configure(double input, double P, double I, double D){
-        this.input = input;
-        this.P = P;
-        this.I = I;
-        this.D = D;
+    public PIDController(double input, double P, double I, double D){
+        changed = input;
+        kP = P;
+        kI = I;
+        kD = D;
+        
     }
     /**
      * this function tells the pid controller where you want your number to be
