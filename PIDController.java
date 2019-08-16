@@ -1,4 +1,7 @@
-public class PIDController{
+
+import edu.wpi.first.wpilibj.Timer;
+
+public class PIDController {
     
     
     /**
@@ -15,21 +18,23 @@ public class PIDController{
     public double kP;
     public double kI;
     public double kD;
-    public double changed;
-
+    public double input;
+    public double target;
+    public double tolerance;
+    public double last_error = 0;
 
     /**
      * this is what you need to set up the PID controller. You must use this method before doing anything else.
      * @param input The number you are trying to control with the PID loop
-     * @param P Proportional
-     * @param I Integral
-     * @param D Derivative
+     * @param kP Proportional
+     * @param kI Integral
+     * @param kD Derivative
      */
-    public PIDController(double input, double P, double I, double D){
-        changed = input;
-        kP = P;
-        kI = I;
-        kD = D;
+    public PIDController(double input, double kP, double kI, double kD){
+        input = this.input;
+        kP = this.kP;
+        kI = this.kI;
+        kD = this.kD;
         
     }
     /**
@@ -37,7 +42,7 @@ public class PIDController{
      * @param target this is where you're trying to get the input to.
      */
     public void setTarget(double target){
-        this.target = target;
+        target = this.target;
     }
 
     /**
@@ -45,7 +50,7 @@ public class PIDController{
      * @param tolerance the number you want to allow for a maximum tolerance
      */
     public void setTolerance(double tolerance){
-        aceptederror = tolerance;
+        tolerance = this.tolerance;
     }
 
     /**
@@ -56,18 +61,17 @@ public class PIDController{
      */
     public double calculate(double maximumoutput, double minimumoutput){
         double error = target - input;
-        double last_error;
         double final_value;
 
-        pvalue = error * P;
+        pvalue = error * kP;
 
-        dvalue = D * (error - last_error)/0.05;
+        dvalue = kD * (error - last_error)/0.05;
 
         if(last_error * error <= 0){
             ivalue = 0;
         }
         else {
-            ivalue += (error * 0.05 * I);
+            ivalue += (error * 0.05 * kI);
         }
         last_error = error;
 
@@ -102,15 +106,14 @@ public class PIDController{
      *
      */
     public double semiAutomate(double manualinput, double maximumoutput, double minimumoutput){
-        PIDController autocorrect = new PIDController();
+        PIDController autocorrect = new PIDController(input, kP, kI, kD);
 
-        autocorrect.configure(input, P, I, D);
         startcorrect.start();
 
-        if (math.abs(manualinput) > 0){
-            return manualinput;
+        if (Math.abs(manualinput) > 0){
             autocorrect.setTarget(input);
             startcorrect.reset();
+            return manualinput;
         }
         else if (startcorrect.get() < 0.33){
             return 0;
