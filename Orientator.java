@@ -42,8 +42,8 @@ public class Orientator {
         }
     }
 
-
-    public double getOutputComponents(double magnitude){
+    
+    public void getOutputComponents(double magnitude){
 
         xOutput = magnitude * Math.cos(desiredangle);
         yOutput = magnitude * Math.sin(desiredangle); 
