@@ -6,6 +6,7 @@ public class PIDController {
     
     /**
      * @author Nikolai (AdmiralTryhard)
+     * If you don't know what a PID controller is, then you should come back and learn about them separately.
      */
     
     public double num1 = 0;
