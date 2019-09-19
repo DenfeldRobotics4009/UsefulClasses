@@ -5,7 +5,7 @@ import java.lang.Math;
  */
 public class Orientator {
 
-    public double desiredangle, currentangle, relativeAngle, desiredmagnitude, xOutput, yOutput;
+    public double desiredAngle, currentAngle, relativeAngle, desiredMagnitude, xOutput, yOutput;
 
     /**
      * You need to know where you're currently facing.
@@ -14,7 +14,7 @@ public class Orientator {
      */
 
     public void setCurrentAngle(double inputAngle) {
-        inputAngle = currentangle;
+        inputAngle = currentAngle;
     }
     /**
      * Finds the relative angle for the object to travel towards, so that your motion matches the angle you want.
@@ -25,14 +25,14 @@ public class Orientator {
     public double getRelativeAngle(double x, double y){
         if(y >= 0){
 
-        desiredangle = Math.atan(x/y);
+        desiredAngle = Math.atan(x/y);
         }
         
         else {
-            desiredangle = Math.atan(x/y) + 180;
+            desiredAngle = Math.atan(x/y) + 180;
         }
         
-        relativeAngle = -1*(currentangle + desiredangle);
+        relativeAngle = desiredAngle - currentAngle;
 
         if(relativeAngle < 0){
             return relativeAngle + 360;
@@ -42,11 +42,16 @@ public class Orientator {
         }
     }
 
+    /**
+     * Running this function will produce x and y components that you can plug into a drive system.
+     * After running this command, the variables xOutput and yOutput can be used for your own purposes.
+     * 
+     * @param magnitude how much power you want to put in from 0-1. 
+     */
+    public void getOutputComponents(double magnitude){
 
-    public double getOutputComponents(double magnitude){
-
-        xOutput = magnitude * Math.cos(desiredangle);
-        yOutput = magnitude * Math.sin(desiredangle); 
+        xOutput = magnitude * Math.cos(relativeAngle);
+        yOutput = magnitude * Math.sin(relativeAngle); 
     }
 
 
