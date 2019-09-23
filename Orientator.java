@@ -2,10 +2,12 @@ import java.lang.Math;
 
 /**
  * @author Nikolai
+ * This is my solution to the whole field-oriented drive problem  You have to get an angle relative to your current, and get the components for that relative motion in order to use in a traditional drive.
+ * This class handles all of the math needed, with exceptions included.
  */
 public class Orientator {
 
-    public double desiredangle, currentangle, relativeAngle, desiredmagnitude, xOutput, yOutput;
+    public double desiredAngle, currentAngle, relativeAngle, desiredMagnitude, xOutput, yOutput;
 
     /**
      * You need to know where you're currently facing.
