@@ -26,13 +26,13 @@ public class Orientator {
   
 
     /**
-     * you need to first use SetCurrentAngle() before 
-     * @param magnitude
-     * @param angle
+     * you need to first use SetCurrentAngle() before doing this. This will make the xOutput and yOutput into usable variables
+     * 
+     * @param magnitude how fast you want to be going
+     * @param angle (in radians) that you want to be heading towards.
      */
     public void getComponents(double magnitude, double angle){
        
-
         relativeAngle = angle - currentangle;
         
         if(relativeAngle < 0){
@@ -45,11 +45,4 @@ public class Orientator {
         xOutput = magnitude * Math.cos(desiredangle);
         yOutput = magnitude * Math.sin(desiredangle); 
     }
-
-    
-
-
-    
-
-
 }
