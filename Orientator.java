@@ -10,44 +10,44 @@ public class Orientator {
     /**
      * You need to know where you're currently facing.
      * @param inputAngle the thing that you want to set as your angle. 
-     * You must have an angle from 0 to 360 degrees (not including 360).
+     * You must have an angle from -2pi to 2pi. If the angle is < 0 rad, This function will just add 2 pi to it.
      */
 
     public void setCurrentAngle(double inputAngle) {
-        inputAngle = currentangle;
+        if (inputAngle < 0){
+            currentangle = inputAngle + (Math.PI * 2);
+        }
+        else {
+            currentangle = inputAngle;
+        }
     }
+  
+
     /**
-     * Finds the relative angle for the object to travel towards, so that your motion matches the angle you want.
-     * @param x the horizontal input that you give (so, the strafe part)
-     * @param y the forward/backwards input that you have.
-     * 
+     * you need to first use SetCurrentAngle() before 
+     * @param magnitude
+     * @param angle
      */
-    public double getRelativeAngle(double x, double y){
-        if(y >= 0){
+    public void getComponents(double magnitude, double angle){
+       
 
-        desiredangle = Math.atan(x/y);
-        }
+        relativeAngle = angle - currentangle;
         
-        else {
-            desiredangle = Math.atan(x/y) + 180;
-        }
-        
-        relativeAngle = -1*(currentangle + desiredangle);
-
         if(relativeAngle < 0){
-            return relativeAngle + 360;
+        desiredangle = relativeAngle + (Math.PI * 2);
         }
         else {
-        return relativeAngle;
+        desiredangle = relativeAngle;
         }
-    }
-
-    
-    public void getOutputComponents(double magnitude){
 
         xOutput = magnitude * Math.cos(desiredangle);
         yOutput = magnitude * Math.sin(desiredangle); 
     }
+
+    
+
+
+    
 
 
 }
