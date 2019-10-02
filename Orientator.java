@@ -17,10 +17,10 @@ public class Orientator {
 
     public void setCurrentAngle(double inputAngle) {
         if (inputAngle < 0){
-            currentangle = inputAngle + (Math.PI * 2);
+            currentAngle = inputAngle + (Math.PI * 2);
         }
         else {
-            currentangle = inputAngle;
+            currentAngle = inputAngle;
         }
     }
   
@@ -33,16 +33,16 @@ public class Orientator {
      */
     public void getComponents(double magnitude, double angle){
        
-        relativeAngle = angle - currentangle;
+        relativeAngle = angle - currentAngle;
         
         if(relativeAngle < 0){
-        desiredangle = relativeAngle + (Math.PI * 2);
+        desiredAngle = relativeAngle + (Math.PI * 2);
         }
         else {
-        desiredangle = relativeAngle;
+        desiredAngle = relativeAngle;
         }
 
-        xOutput = magnitude * Math.cos(desiredangle);
-        yOutput = magnitude * Math.sin(desiredangle); 
+        xOutput = magnitude * Math.cos(desiredAngle);
+        yOutput = magnitude * Math.sin(desiredAngle); 
     }
 }
