@@ -26,13 +26,11 @@ public class PIDController {
 
     /**
      * this is what you need to set up the PID controller. You must use this method before doing anything else.
-     * @param input The number you are trying to control with the PID loop
      * @param kP Proportional
      * @param kI Integral
      * @param kD Derivative
      */
-    public PIDController(double input, double kP, double kI, double kD){
-        input = this.input;
+    public PIDController(double kP, double kI, double kD){
         kP = this.kP;
         kI = this.kI;
         kD = this.kD;
@@ -41,9 +39,12 @@ public class PIDController {
     /**
      * this function tells the pid controller where you want your number to be
      * @param target this is where you're trying to get the input to.
+     * @param input The number you are trying to control with the PID loop
+     *
      */
-    public void setTarget(double target){
+    public void Set(double target, double input){
         target = this.target;
+        input = this.input;
     }
 
     /**
@@ -107,12 +108,12 @@ public class PIDController {
      *
      */
     public double semiAutomate(double manualinput, double maximumoutput, double minimumoutput){
-        PIDController autocorrect = new PIDController(input, kP, kI, kD);
+        PIDController autocorrect = new PIDController(kP, kI, kD);
 
         startcorrect.start();
 
         if (Math.abs(manualinput) > 0){
-            autocorrect.setTarget(input);
+            autocorrect.Set(input, input);
             startcorrect.reset();
             return manualinput;
         }
