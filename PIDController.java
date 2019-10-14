@@ -6,45 +6,75 @@ public class PIDController {
     
     /**
      * @author Nikolai (AdmiralTryhard)
-     * If you don't know what a PID controller is, then you should come back and learn about them separately.
      */
     
-    public double num1 = 0;
-    public double num2 = 0;
-    public double pvalue = 0;
-    public double ivalue = 0;
-    public double dvalue = 0;
+    
+    public double pvalue;
+    public double ivalue;
+    public double dvalue;
     public Timer startcorrect = new Timer();
-    public double aceptederror = 0;
     public double kP;
     public double kI;
     public double kD;
     public double input;
     public double target;
-    public double tolerance;
-    public double last_error = 0;
+    public double accepted;
+    public double last_error;
+    public double final_value;
+    public double error;
 
     /**
      * this is what you need to set up the PID controller. You must use this method before doing anything else.
+     * @param input The number you are trying to control with the PID loop
      * @param kP Proportional
      * @param kI Integral
      * @param kD Derivative
      */
-    public PIDController(double kP, double kI, double kD){
-        kP = this.kP;
-        kI = this.kI;
-        kD = this.kD;
+    public PIDController(double P, double I, double D){
+        kP = P;
+        kI = I;
+        kD = D;
         
+    }
+
+    /**
+    * Just to return the values of PID in an array in order P, I, D.
+    */
+    public double[] getPID(){
+        double[] PIDvalues = new double[] {kP, kI, kD};
+        return PIDvalues;
     }
     /**
      * this function tells the pid controller where you want your number to be
      * @param target this is where you're trying to get the input to.
-     * @param input The number you are trying to control with the PID loop
-     *
      */
-    public void Set(double target, double input){
-        target = this.target;
-        input = this.input;
+    public void setTarget(double goal){
+        target = goal;
+
+    }
+
+    /**
+     * this will spout out the target number you previously stated
+     */
+    
+    public double getTarget(){
+        return target;
+    }
+
+    /**
+     * 
+     * @param tobechanged the real-time number you will have to be changed
+     */
+    public void setInput(double tobechanged){
+        input = tobechanged;
+    }
+
+    /**
+     * 
+     * spits out the input that you should have set.
+     */
+    public double getInput(){
+        return input;
     }
 
     /**
@@ -52,7 +82,11 @@ public class PIDController {
      * @param tolerance the number you want to allow for a maximum tolerance
      */
     public void setTolerance(double tolerance){
-        tolerance = this.tolerance;
+        accepted = tolerance;
+    }
+
+    public double getTolerance(){
+        return accepted;
     }
 
     /**
@@ -62,22 +96,23 @@ public class PIDController {
      * 
      */
     public double calculate(double maximumoutput, double minimumoutput){
-        double error = target - input;
-        double final_value;
+        error = getTarget() - getInput();
 
         pvalue = error * kP;
 
-        dvalue = kD * (error - last_error)/0.05;
+        dvalue = kD * ((error - last_error)/0.05);
 
-        if(last_error * error <= 0){
+        last_error = error;
+        
+        if(last_error * error <= 0 || Math.abs(error) <= getTolerance()){
             ivalue = 0;
         }
         else {
             ivalue += (error * 0.05 * kI);
         }
-        last_error = error;
+       
 
-        if(Math.abs(error) < tolerance){
+        if(Math.abs(error) < getTolerance()){
             final_value = 0;
         }
         else{
@@ -108,12 +143,12 @@ public class PIDController {
      *
      */
     public double semiAutomate(double manualinput, double maximumoutput, double minimumoutput){
-        PIDController autocorrect = new PIDController(kP, kI, kD);
 
         startcorrect.start();
 
         if (Math.abs(manualinput) > 0){
-            autocorrect.Set(input, input);
+            setInput(input);
+            setTarget(input);
             startcorrect.reset();
             return manualinput;
         }
@@ -121,7 +156,7 @@ public class PIDController {
             return 0;
         }
         else {
-            return autocorrect.calculate(maximumoutput, minimumoutput);
+            return calculate(maximumoutput, minimumoutput);
         }
     }
 
